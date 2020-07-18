@@ -26,12 +26,6 @@ function App() {
   const gridRef = useRef(grid);
   gridRef.current = grid;
 
-  const containerStyle = {
-    display: "grid",
-    gridTemplateColumns: `repeat(${gridSize.x}, 30px)`,
-    marginTop: 20,
-  };
-
   const gridNeighbours = [
     [0, 1],
     [1, 0],
@@ -43,10 +37,10 @@ function App() {
     [-1, -1],
   ];
 
-  const handleChange = (event) =>
+  const handleChange = ({ target }) =>
     setGridSize({
       ...gridSize,
-      [event.target.name]: Number(event.target.value),
+      [target.name]: Number(target.value),
     });
 
   const onClickCreateGrid = (event) => {
@@ -134,41 +128,67 @@ function App() {
         className="App"
       >
         <div className="generation-zero">
-          <label>X: </label>
-          <input onChange={handleChange} name="x" />
-          <label>Y: </label>
-          <input onChange={handleChange} name="y" />
-          <label>Turns </label>
-          <input
-            onChange={({ target }) => {
-              setCount(0);
-              setTurns(Number(target.value));
-              turnsRef.current = Number(target.value);
-            }}
-          />
-          <label>X1: </label>
-          <input
-            onChange={({ target }) => setCols([Number(target.value), cols[1]])}
-          />
-          <label>Y1: </label>
-          <input
-            onChange={({ target }) => setCols([cols[0], Number(target.value)])}
-          />
-
-          <button onClick={onClickCreateGrid}>Create Grid</button>
-          <button
-            onClick={() => {
-              setRunning(!running);
-              if (!running) {
-                runningRef.current = true;
-                runSimulation();
-              }
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
             }}
           >
-            {running ? "Stop" : "Start"}
-          </button>
+            <div>
+              <label className="white">X: </label>
+              <input onChange={handleChange} name="x" />
+            </div>
+            <div>
+              <label className="white">Y: </label>
+              <input onChange={handleChange} name="y" />
+            </div>
+            <div>
+              <label className="white">Turns: </label>
+              <input
+                onChange={({ target }) => {
+                  setCount(0);
+                  setTurns(Number(target.value));
+                  turnsRef.current = Number(target.value);
+                }}
+              />
+            </div>
+            <div>
+              <label className="white">X1: </label>
+              <input
+                onChange={({ target }) =>
+                  setCols([Number(target.value), cols[1]])
+                }
+              />
+            </div>
+            <div>
+              <label className="white">Y1: </label>
+              <input
+                onChange={({ target }) =>
+                  setCols([cols[0], Number(target.value)])
+                }
+              />
+            </div>
+          </div>
+
           <div>
+            <button className="white btn" onClick={onClickCreateGrid}>
+              Create Grid
+            </button>
             <button
+              className="white btn"
+              onClick={() => {
+                setRunning(!running);
+                if (!running) {
+                  runningRef.current = true;
+                  runSimulation();
+                }
+              }}
+            >
+              {running ? "Stop" : "Start"}
+            </button>
+            <button
+              className="white btn"
               onClick={() => {
                 setGrid((grid) =>
                   grid.map((arr) =>
@@ -180,9 +200,19 @@ function App() {
               Randomize
             </button>
           </div>
-          <div> {count ? count : null}</div>
+          <div className="white">
+            {" "}
+            {count ? `The cell was green  ${count} times ` : null}
+          </div>
         </div>
-        <div style={containerStyle} className="grid-container">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: `repeat(${gridSize.x}, 30px)`,
+            marginTop: 10,
+          }}
+          className="grid-container"
+        >
           {grid.map((ar, i) =>
             ar.map((cell, k) => (
               <GridCell
@@ -195,10 +225,10 @@ function App() {
                 }
                 key={`${i}-${k}`}
                 style={{
-                  border: "1px solid black",
+                  border: "2px solid white",
                   width: 30,
                   height: 30,
-                  backgroundColor: grid[i][k] ? "green" : "red",
+                  backgroundColor: grid[i][k] ? "#006400" : "#cd0000",
                 }}
               />
             ))
