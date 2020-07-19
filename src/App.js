@@ -13,6 +13,7 @@ function App() {
   const [count, setCount] = useState(0);
   const [turns, setTurns] = useState(0);
   const [cols, setCols] = useState([0, 0]);
+  const [gridCSS, setGridCSS] = useState(0);
 
   const runningRef = useRef(running);
   runningRef.current = running;
@@ -50,6 +51,7 @@ function App() {
       newGrid.push(new Array(gridSize.y).fill(0));
     }
 
+    setGridCSS(gridSize.x);
     setGrid(newGrid);
   };
 
@@ -156,6 +158,7 @@ function App() {
             <div>
               <label className="white">X1: </label>
               <input
+                value={cols[0]}
                 onChange={({ target }) =>
                   setCols([Number(target.value), cols[1]])
                 }
@@ -164,6 +167,7 @@ function App() {
             <div>
               <label className="white">Y1: </label>
               <input
+                value={cols[1]}
                 onChange={({ target }) =>
                   setCols([cols[0], Number(target.value)])
                 }
@@ -173,7 +177,7 @@ function App() {
 
           <div>
             <button className="white btn" onClick={onClickCreateGrid}>
-              Create Grid
+              Set Grid
             </button>
             <button
               className="white btn"
@@ -200,15 +204,14 @@ function App() {
               Randomize
             </button>
           </div>
-          <div className="white">
-            {" "}
-            {count ? `The cell was green  ${count} times ` : null}
+          <div style={{ fontSize: "1.1rem" }} className="white">
+            {count ? `The cell was green  ${count} times ` : undefined}
           </div>
         </div>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: `repeat(${gridSize.x}, 30px)`,
+            gridTemplateColumns: `repeat(${gridCSS}, auto)`,
             marginTop: 10,
           }}
           className="grid-container"
