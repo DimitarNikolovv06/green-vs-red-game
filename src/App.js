@@ -148,6 +148,7 @@ function App() {
             <div>
               <label className="white">Turns: </label>
               <input
+                value={turns}
                 onChange={({ target }) => {
                   setCount(0);
                   setTurns(Number(target.value));
