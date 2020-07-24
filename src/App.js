@@ -116,7 +116,7 @@ function App() {
     } else {
       setTimeout(runSimulation, 100);
     }
-  }, [gridSize, cols]);
+  }, [gridSize, cols, gridNeighbours]);
 
   return (
     <>
